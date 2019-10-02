@@ -19,10 +19,13 @@ var argument = process.argv.slice(3).join(" ");
 function run(operation, argument) {
     if (operation == "concert-this") {
         var queryURL = "https://rest.bandsintown.com/artists/" + argument + "/events/?app_id=codingbootcamp";
-        axios.get(queryURL).then(function (response) {
-            console.log(response.data[0].venue.name)
-            console.log(response.data[0].venue.city + " , " + response.data[0].venue.country)
-            console.log(moment(response.data[0].datetime).format('MM/DD/YYYY'))
+        axios.get(queryURL).then(function (err, response) {
+            if (err) {
+                return console.log('Error occurred: ' + err);
+            }
+            console.log("Name of venue: " + response.data[0].venue.name)
+            console.log("Country: " + response.data[0].venue.city + " , " + response.data[0].venue.country)
+            console.log(moment("Date of: " + response.data[0].datetime).format('MM/DD/YYYY'))
 
         })
 
@@ -50,15 +53,18 @@ function run(operation, argument) {
             argument = "Mr. Nobody"
         }
         var queryURL = "https://www.omdbapi.com/?t=" + argument + "&apikey=trilogy";
-        axios.get(queryURL).then(function (response) {
-            console.log(response.data.Title)
-            console.log(response.data.Year)
-            console.log(response.data.imdbRating)
-            console.log(response.data.Ratings[1].Value)
-            console.log(response.data.Country)
-            console.log(response.data.Language)
-            console.log(response.data.Plot)
-            console.log(response.data.Actors)
+        axios.get(queryURL).then(function (err, response) {
+            if (err) {
+                return console.log('Error occurred: ' + err);
+            }
+            console.log('Title: response.data.Title')
+            console.log("Year: " + response.data.Year)
+            console.log("IMBD Rating: " + response.data.imdbRating)
+            console.log("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value)
+            console.log("Countries where movie was released: " + response.data.Country)
+            console.log("Languages available: " + response.data.Language)
+            console.log("Plot: " + response.data.Plot)
+            console.log("Cast: " + response.data.Actors)
 
         })
 
@@ -66,6 +72,9 @@ function run(operation, argument) {
 
     } else if (operation == "do-what-it-says") {
         fs.readFile("random.txt", "utf-8", function (err, data) {
+              if (err) {
+                return console.log('Error occurred: ' + err);
+            }
             // console.log(data.split(","));
 
             // data.split(",")[1] = subject;
@@ -89,39 +98,68 @@ inquirer.prompt([
     }
 
 ]).then(function (guess1) {
-    inquirer.prompt([
 
-        {
-            type: "input",
-            name: "userInput",
-            message: "What do you want to search?"
-        }
-        
-    ]).then(function (guess2) {
-        // console.log ( JSON.stringify(guess1.userGuess) + " " + JSON.stringify(guess2.userInput))
-        var operation2 = JSON.stringify(guess1.userGuess);
-        
+    // console.log ( JSON.stringify(guess1.userGuess) + " " + JSON.stringify(guess2.userInput))
+    var operation2 = guess1.userGuess;
 
-        if (operation2 == "Look up Concert") {
-            console.log("sex")
 
-        } else if (operation2 == "Look up Song" ){
+    if (operation2 === "Look up Concert") {
+        inquirer.prompt([
 
-        } else if (operation2 == "Look up Movie" ){
-            
-        } else if (operation2 == "Read this File" ){
-            
-        }
-        
-        
-        
-        var operation = JSON.stringify(guess1.userGuess);
-        var subject = JSON.stringify(guess2.userInput);
-        
-        run(operation, subject)
-        
-        
-      }
-    )
-})
+            {
+                type: "input",
+                name: "userInput",
+                message: "Who's concert do you wanna look up?"
+            }
+
+        ]).then(function (guess2) {
+            run("concert-this", guess2.userInput)
+        })
+    } else if (operation2 == "Look up Song") {
+            inquirer.prompt([
+    
+                {
+                    type: "input",
+                    name: "userInput",
+                    message: "What's the name of the song  you wanna look up?"
+                }
+    
+            ]).then(function (guess3) {
+                run("spotify-this-song", guess3.userInput)
+            })
+
+    } else if (operation2 == "Look up Movie") {
+        inquirer.prompt([
+    
+            {
+                type: "input",
+                name: "userInput",
+                message: "What's the name of the movie  you wanna look up?"
+            }
+
+        ]).then(function (guess4) {
+            run("movie-this", guess4.userInput)
+        })
+
+    } else if (operation2 == "Read this File") {
+        inquirer.prompt([
+    
+            {
+                type: "input",
+                name: "userInput",
+                message: "What's the name of the file in the local directory that you wanna look up?"
+            }
+
+        ]).then(function (guess5) {
+            run("do-what-it-says", guess5.userInput)
+        })
+
+    }
+
+
+
+
+}
+)
+
 
