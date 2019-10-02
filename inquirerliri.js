@@ -79,36 +79,49 @@ function run(operation, argument) {
     }
 }
 
-run(operation,argument)
 
-// inquirer.prompt([
-//     {
-//         type: "list",
-//         name: "userGuess",
-//         message: "Choose your search operation",
-//         choices: ["Look up Concert", "Look up Song", "Look up Movie", "Read Text File",]
-//     }
+inquirer.prompt([
+    {
+        type: "list",
+        name: "userGuess",
+        message: "Choose your search operation",
+        choices: ["Look up Concert", "Look up Song", "Look up Movie", "Read Text File",]
+    }
 
-// ]).then(function (guess1) {
-//     inquirer.prompt([
+]).then(function (guess1) {
+    inquirer.prompt([
 
-//         {
-//             type: "input",
-//             name: "userInput",
-//             message: "What do you want to search?"
-//         }
+        {
+            type: "input",
+            name: "userInput",
+            message: "What do you want to search?"
+        }
         
-//     ]).then(function (guess2) {
-//         console.log ( JSON.stringify(guess1.userGuess) + " " + JSON.stringify(guess2.userInput))
+    ]).then(function (guess2) {
+        // console.log ( JSON.stringify(guess1.userGuess) + " " + JSON.stringify(guess2.userInput))
+        var operation2 = JSON.stringify(guess1.userGuess);
         
-//         var operation = JSON.stringify(guess1.userGuess);
-//         var subject = JSON.stringify(guess2.userInput);
-        
-//         run(operation, subject)
-        
-        
-//       }
-//     )
-// })
 
+        if (operation2 == "Look up Concert") {
+            console.log("sex")
+
+        } else if (operation2 == "Look up Song" ){
+
+        } else if (operation2 == "Look up Movie" ){
+            
+        } else if (operation2 == "Read this File" ){
+            
+        }
+        
+        
+        
+        var operation = JSON.stringify(guess1.userGuess);
+        var subject = JSON.stringify(guess2.userInput);
+        
+        run(operation, subject)
+        
+        
+      }
+    )
+})
 
