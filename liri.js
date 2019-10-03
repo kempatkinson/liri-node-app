@@ -20,26 +20,24 @@ function run(operation, argument) {
     if (operation == "concert-this") {
         var queryURL = "https://rest.bandsintown.com/artists/" + argument + "/events/?app_id=codingbootcamp";
         axios.get(queryURL).then(function (response) {
-
+            
             console.log("Name of venue: " + response.data[0].venue.name)
             console.log("Country: " + response.data[0].venue.city + " , " + response.data[0].venue.country)
             console.log("Date of: " + moment(response.data[0].datetime).format('MM/DD/YYYY'))
-
         })
-
-
 
     } else if (operation == "spotify-this-song") {
         if (argument == "") {
             argument = "The Sign Ace of Base"
         }
         spotify.search({ type: 'track', query: argument }, function (data) {
-            
+
             // console.log(JSON.stringify(data, "paul", 2));
-            console.log("Artist: " + data.tracks.items[0].artists[0].name)
-            console.log("Album: " + data.tracks.items[0].album.name)
-            console.log("Song: " + data.tracks.items[0].name)
-            console.log(data.tracks.items[0].external_urls)
+            console.log(data)
+            // console.log("Artist: " + data.tracks.items[0].artists[0].name)
+            // console.log("Album: " + data.tracks.items[0].album.name)
+            // console.log("Song: " + data.tracks.items[0].name)
+            // console.log(data.tracks.items[0].external_urls)
 
         });
 
@@ -64,11 +62,9 @@ function run(operation, argument) {
 
 
     } else if (operation == "do-what-it-says") {
-        fs.readFile("random.txt", "utf-8", function (data) {
-            console.log(data)
-            // var fileArr = data.split(",")
-            // console.log(fileArr[1])
-            // run(fileArr[0], fileArr[1])
+        fs.readFile("random.txt", "utf-8", function (err, data) {
+            var fileArr = data.split(",")
+            run(fileArr[0], fileArr[1])
 
         })
     }
@@ -100,21 +96,21 @@ inquirer.prompt([
             run("concert-this", guess2.userInput)
         })
     } else if (operation2 == "Look up Song") {
-            inquirer.prompt([
-    
-                {
-                    type: "input",
-                    name: "userInput",
-                    message: "What's the name of the song  you wanna look up?"
-                }
-    
-            ]).then(function (guess3) {
-                run("spotify-this-song", guess3.userInput)
-            })
+        inquirer.prompt([
+
+            {
+                type: "input",
+                name: "userInput",
+                message: "What's the name of the song  you wanna look up?"
+            }
+
+        ]).then(function (guess3) {
+            run("spotify-this-song", guess3.userInput)
+        })
 
     } else if (operation2 == "Look up Movie") {
         inquirer.prompt([
-    
+
             {
                 type: "input",
                 name: "userInput",
@@ -127,7 +123,7 @@ inquirer.prompt([
 
     } else if (operation2 == "Read this File") {
         inquirer.prompt([
-    
+
             {
                 type: "input",
                 name: "userInput",
