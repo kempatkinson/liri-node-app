@@ -20,7 +20,7 @@ function run(operation, argument) {
     if (operation == "concert-this") {
         var queryURL = "https://rest.bandsintown.com/artists/" + argument + "/events/?app_id=codingbootcamp";
         axios.get(queryURL).then(function (response) {
-            
+
             console.log("Name of venue: " + response.data[0].venue.name)
             console.log("Country: " + response.data[0].venue.city + " , " + response.data[0].venue.country)
             console.log("Date of: " + moment(response.data[0].datetime).format('MM/DD/YYYY'))
@@ -30,14 +30,15 @@ function run(operation, argument) {
         if (argument == "") {
             argument = "The Sign Ace of Base"
         }
-        spotify.search({ type: 'track', query: argument }, function (data) {
-
+        spotify.search({ type: 'track', query: argument }, function (err ,data) {
+            if (err) {
+                return console.log('Error occurred: ' + err);
+            }
             // console.log(JSON.stringify(data, "paul", 2));
-            console.log(data)
-            // console.log("Artist: " + data.tracks.items[0].artists[0].name)
-            // console.log("Album: " + data.tracks.items[0].album.name)
-            // console.log("Song: " + data.tracks.items[0].name)
-            // console.log(data.tracks.items[0].external_urls)
+            console.log("Artist: " + data.tracks.items[0].artists[0].name)
+            console.log("Album: " + data.tracks.items[0].album.name)
+            console.log("Song: " + data.tracks.items[0].name)
+            console.log(data.tracks.items[0].external_urls)
 
         });
 
