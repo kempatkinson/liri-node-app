@@ -24,7 +24,7 @@ The four options:
 
 ![Options](./screenshots/Four.png)
 
-After selecting, "Look up Concert", and typing "Black Eye Peas"
+After selecting, "Look up Concert", and typing "Black Eyed Peas"
 
 ![Concert](./screenshots/Concert.png)
 
